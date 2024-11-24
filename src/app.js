@@ -1,4 +1,6 @@
 const Hapi = require('@hapi/hapi');
+const Path = require('path');
+const Inert = require('@hapi/inert');
 const { loadModel, predict } = require('./inference');
 
 (async () => {
@@ -12,12 +14,25 @@ const { loadModel, predict } = require('./inference');
       cors: {
         origin: ["*"],
       },
+      files: {
+        relativeTo: Path.join(__dirname, '../public')
+      }
     },
+  });
+
+  await server.register(Inert);
+
+  server.route({
+    method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+      return h.file('index.html');
+    }
   });
 
   server.route({
     method: 'POST',
-    path: '/predict',
+    path: '/api/predict',
     handler: async (request) => {
       const { image } = request.payload;
       const predictions = await predict(model, image);
@@ -28,6 +43,14 @@ const { loadModel, predict } = require('./inference');
         allow: 'multipart/form-data',
         multipart: true,
       }
+    }
+  });
+
+  server.route({
+    method: '*',
+    path: '/{any*}',
+    handler: (request, h) => {
+      return h.file('default.html');
     }
   });
 

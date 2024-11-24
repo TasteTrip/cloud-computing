@@ -21,6 +21,7 @@
   "homepage": "https://github.com/wishba/tastetrip-ml-tensorflowjs#readme",
   "dependencies": {
     "@hapi/hapi": "^21.3.12",
+    "@hapi/inert": "^7.1.0",
     "@tensorflow/tfjs-node": "^4.22.0"
   }
 }
