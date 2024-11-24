@@ -4,11 +4,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>TasteTrip</title>
+
+  <style>
+    #loading {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Hello</h1>
+  <h1>TasteTrip: Food Photo Analyzer</h1>
+  <form id="uploadForm">
+    <input type="file" id="image" name="image" accept="image/*" required>
+    <button type="button" id="uploadButton">Analyze</button>
+  </form>
+  <div id="loading">Loading...</div>
+  <div id="response"></div>
+
+  <script>
+    document.getElementById('uploadButton').addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      const fileInput = document.getElementById('image');
+      const responseDiv = document.getElementById('response');
+      const loadingDiv = document.getElementById('loading');
+
+      responseDiv.innerHTML = '';
+
+      if (!fileInput.files.length) {
+        alert('Please select an image file!');
+        return;
+      }
+
+      loadingDiv.style.display = 'block';
+
+      try {
+        const form = document.getElementById('uploadForm');
+        const formData = new FormData(form);
+
+        const response = await fetch('http://35.222.70.188:3000/api/predict', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        responseDiv.innerHTML = `
+          <h3>Server Response:</h3>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+
+      } catch (error) {
+        responseDiv.innerHTML = `
+          <h3>Failed to upload:</h3>
+          <p>${error.message}</p>
+        `;
+
+      } finally {
+        loadingDiv.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 
 </html>
