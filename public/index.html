@@ -5,12 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TasteTrip</title>
-
-  <style>
-    #loading {
-      display: none;
-    }
-  </style>
 </head>
 
 <body>
@@ -19,25 +13,25 @@
     <input type="file" id="image" name="image" accept="image/*" required>
     <button type="button" id="uploadButton">Analyze</button>
   </form>
-  <div id="loading">Loading...</div>
-  <div id="response"></div>
+  <div id="content"></div>
 
   <script>
     document.getElementById('uploadButton').addEventListener('click', async (event) => {
       event.preventDefault();
 
       const fileInput = document.getElementById('image');
-      const responseDiv = document.getElementById('response');
-      const loadingDiv = document.getElementById('loading');
+      const contentDiv = document.getElementById('content')
 
-      responseDiv.innerHTML = '';
 
       if (!fileInput.files.length) {
         alert('Please select an image file!');
         return;
       }
 
-      loadingDiv.style.display = 'block';
+      const loading = document.createElement('p')
+      loading.id = 'loading'
+      loading.textContent = 'loading...'
+      contentDiv.appendChild(loading)
 
       try {
         const form = document.getElementById('uploadForm');
@@ -53,19 +47,27 @@
         }
 
         const data = await response.json();
-        responseDiv.innerHTML = `
-          <h3>Server Response:</h3>
-          <pre>${JSON.stringify(data, null, 2)}</pre>
-        `;
+
+        const title = document.createElement('h3')
+        title.textContent = 'Result:'
+        contentDiv.appendChild(title)
+
+        const responseDiv = document.createElement('p')
+        responseDiv.textContent = JSON.stringify(data)
+        contentDiv.appendChild(responseDiv)
 
       } catch (error) {
-        responseDiv.innerHTML = `
-          <h3>Failed to upload:</h3>
-          <p>${error.message}</p>
-        `;
+        const title = document.createElement('h3')
+        title.textContent = 'Failed to upload:'
+        contentDiv.appendChild(title)
+
+        const responseDiv = document.createElement('p')
+        responseDiv.textContent = error.message
+        contentDiv.appendChild(responseDiv)
 
       } finally {
-        loadingDiv.style.display = 'none';
+        const finishLoading = document.getElementById('loading')
+        finishLoading.remove()
       }
     });
   </script>
