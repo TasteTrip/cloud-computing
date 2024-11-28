@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
   <h1>TasteTrip: Food Photo Analyzer</h1>
   <form id="uploadForm">
     <input type="file" id="image" name="image" accept="image/*" required>
@@ -16,18 +17,87 @@
   <div id="content"></div>
 
   <script>
+=======
+  <header>
+    <h1>TasteTrip: Food Photo Analyzer</h1>
+    <form id="uploadForm">
+      <input type="file" id="image" name="image" accept="image/*" required>
+      <button type="button" id="uploadButton">Analyze</button>
+    </form>
+    <hr>
+  </header>
+  <main id="content"></main>
+<<<<<<< HEAD
+=======
+
+  <script>
+    const foodData = {
+      "Ayam Goreng": "Ayam Goreng, or fried chicken, is a beloved Indonesian dish that is often served with steamed rice, sambal, and a variety of traditional side dishes. The chicken is marinated with a mixture of aromatic spices such as turmeric, garlic, and ginger, then deep-fried until the skin becomes crispy and golden. Known for its rich, savory flavor, ayam goreng is a common feature in many Indonesian meals and is often enjoyed during festive occasions, family gatherings, or as a quick, comforting meal. The dish has numerous regional variations, each with its own unique seasoning and style of preparation, making it a truly versatile and cherished part of Indonesian cuisine.",
+      "Daging Rendang": "Daging Rendang, or Rendang beef, is a slow-cooked, richly flavored dish originating from the Minangkabau ethnic group of West Sumatra, Indonesia. It is made by simmering chunks of beef in a mixture of coconut milk, turmeric, ginger, garlic, lemongrass, and a variety of spices for several hours, allowing the flavors to meld and the meat to become tender. The result is a deeply flavorful and aromatic stew that is often enjoyed with steamed rice. Rendang is not just a dish but a cultural symbol, often served at ceremonial occasions such as weddings or religious celebrations. It is so beloved that it has been recognized as one of the world’s most delicious foods, praised for its perfect balance of sweet, savory, and spicy flavors.",
+      "Telur Dadar": "Telur Dadar, or the Indonesian-style omelette, is a simple yet delicious dish made by whisking eggs and frying them in a hot pan. While the basic version consists only of eggs, the dish is often enhanced with a variety of fillings such as chopped onions, tomatoes, chili, herbs, and sometimes even meat or seafood. Telur Dadar is a versatile meal that can be eaten at any time of day – whether as a quick breakfast, a light lunch, or a side dish to accompany a larger meal. Its flavor is savory and comforting, with the eggs providing a rich, fluffy texture. This dish is commonly found in Indonesian households and is also popular in other Southeast Asian countries, with each region putting its own spin on the recipe."
+    }
+
+    function compressImage(file, maxDimension) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const img = new Image();
+          img.src = event.target.result;
+
+          img.onload = function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let { width, height } = img;
+
+            if (width > height && width > maxDimension) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else if (height > maxDimension) {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(
+              (blob) => {
+                resolve(blob);
+              },
+              'image/jpeg',
+              0.8
+            );
+          };
+
+          img.onerror = reject;
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+>>>>>>> b8ed4df (compress the image sended)
     document.getElementById('uploadButton').addEventListener('click', async (event) => {
       event.preventDefault();
 
       const fileInput = document.getElementById('image');
+<<<<<<< HEAD
       const contentDiv = document.getElementById('content')
 
+=======
+      const contentDiv = document.getElementById('content');
+>>>>>>> b8ed4df (compress the image sended)
 
       if (!fileInput.files.length) {
         alert('Please select an image file!');
         return;
       }
 
+<<<<<<< HEAD
       const loading = document.createElement('p')
       loading.id = 'loading'
       loading.textContent = 'loading...'
@@ -36,6 +106,20 @@
       try {
         const form = document.getElementById('uploadForm');
         const formData = new FormData(form);
+=======
+      const loading = document.createElement('p');
+      loading.id = 'loading';
+      loading.textContent = 'loading...';
+      contentDiv.appendChild(loading);
+
+      try {
+        const file = fileInput.files[0];
+
+        const compressedFile = await compressImage(file, 1200);
+
+        const formData = new FormData();
+        formData.append('image', compressedFile, file.name);
+>>>>>>> b8ed4df (compress the image sended)
 
         const response = await fetch('http://35.222.70.188:3000/api/predict', {
           method: 'POST',
@@ -48,6 +132,7 @@
 
         const data = await response.json();
 
+<<<<<<< HEAD
         const title = document.createElement('h3')
         title.textContent = 'Result:'
         contentDiv.appendChild(title)
@@ -71,6 +156,32 @@
       }
     });
   </script>
+=======
+        const highestEntry = Object.entries(data.result).reduce((max, current) => {
+          return current[1] > max[1] ? current : max;
+        }, Object.entries(data.result)[0]);
+
+        const foodName = document.createElement('h2');
+        foodName.textContent = Object.keys(foodData)[highestEntry[0]];
+        contentDiv.appendChild(foodName);
+
+        const foodInfo = document.createElement('p');
+        foodInfo.textContent = foodData[Object.keys(foodData)[highestEntry[0]]];
+        contentDiv.appendChild(foodInfo);
+
+      } catch (error) {
+        const responseDiv = document.createElement('p');
+        responseDiv.textContent = `Failed to upload: ${error.message}`;
+        contentDiv.appendChild(responseDiv);
+
+      } finally {
+        const finishLoading = document.getElementById('loading');
+        finishLoading.remove();
+      }
+    });
+  </script>
+>>>>>>> 75802e7 (compress the image sended)
+>>>>>>> b8ed4df (compress the image sended)
 </body>
 
 </html>
