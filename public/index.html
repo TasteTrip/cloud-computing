@@ -5,19 +5,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TasteTrip</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      text-align: center;
+      width: 100%;
+      max-width: 50rem;
+    }
+
+    #content {
+      max-width: 50rem;
+    }
+
+    .food-description {
+      text-align: justify;
+    }
+  </style>
 </head>
 
 <body>
-<<<<<<< HEAD
-  <h1>TasteTrip: Food Photo Analyzer</h1>
-  <form id="uploadForm">
-    <input type="file" id="image" name="image" accept="image/*" required>
-    <button type="button" id="uploadButton">Analyze</button>
-  </form>
-  <div id="content"></div>
-
-  <script>
-=======
   <header>
     <h1>TasteTrip: Food Photo Analyzer</h1>
     <form id="uploadForm">
@@ -27,8 +41,6 @@
     <hr>
   </header>
   <main id="content"></main>
-<<<<<<< HEAD
-=======
 
   <script>
     const foodData = {
@@ -92,33 +104,17 @@
       });
     }
 
->>>>>>> b8ed4df (compress the image sended)
     document.getElementById('uploadButton').addEventListener('click', async (event) => {
       event.preventDefault();
 
       const fileInput = document.getElementById('image');
-<<<<<<< HEAD
-      const contentDiv = document.getElementById('content')
-
-=======
       const contentDiv = document.getElementById('content');
->>>>>>> b8ed4df (compress the image sended)
 
       if (!fileInput.files.length) {
         alert('Please select an image file!');
         return;
       }
 
-<<<<<<< HEAD
-      const loading = document.createElement('p')
-      loading.id = 'loading'
-      loading.textContent = 'loading...'
-      contentDiv.appendChild(loading)
-
-      try {
-        const form = document.getElementById('uploadForm');
-        const formData = new FormData(form);
-=======
       const loading = document.createElement('p');
       loading.id = 'loading';
       loading.textContent = 'loading...';
@@ -131,7 +127,6 @@
 
         const formData = new FormData();
         formData.append('image', compressedFile, file.name);
->>>>>>> b8ed4df (compress the image sended)
 
         const response = await fetch('http://35.222.70.188:3000/api/predict', {
           method: 'POST',
@@ -144,31 +139,6 @@
 
         const data = await response.json();
 
-<<<<<<< HEAD
-        const title = document.createElement('h3')
-        title.textContent = 'Result:'
-        contentDiv.appendChild(title)
-
-        const responseDiv = document.createElement('p')
-        responseDiv.textContent = JSON.stringify(data)
-        contentDiv.appendChild(responseDiv)
-
-      } catch (error) {
-        const title = document.createElement('h3')
-        title.textContent = 'Failed to upload:'
-        contentDiv.appendChild(title)
-
-        const responseDiv = document.createElement('p')
-        responseDiv.textContent = error.message
-        contentDiv.appendChild(responseDiv)
-
-      } finally {
-        const finishLoading = document.getElementById('loading')
-        finishLoading.remove()
-      }
-    });
-  </script>
-=======
         const highestEntry = Object.entries(data.result).reduce((max, current) => {
           return current[1] > max[1] ? current : max;
         }, Object.entries(data.result)[0]);
@@ -193,8 +163,6 @@
       }
     });
   </script>
->>>>>>> 75802e7 (compress the image sended)
->>>>>>> b8ed4df (compress the image sended)
 </body>
 
 </html>
