@@ -1,11 +1,12 @@
+const tf = require('@tensorflow/tfjs-node');
 const Hapi = require('@hapi/hapi');
+const sharp = require('sharp');
 const Path = require('path');
 const Inert = require('@hapi/inert');
-const { loadModel, predict } = require('./inference');
 
 (async () => {
-  const model = await loadModel();
-  console.log('model loaded!');
+  const modelPath = 'file://model/model.json';
+  const model = await tf.loadGraphModel(modelPath);
 
   const server = Hapi.server({
     host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
@@ -33,17 +34,41 @@ const { loadModel, predict } = require('./inference');
   server.route({
     method: 'POST',
     path: '/api/predict',
-    handler: async (request) => {
-      const { image } = request.payload;
-      const predictions = await predict(model, image);
-      return { result: predictions };
-    },
     options: {
       payload: {
-        allow: 'multipart/form-data',
+        maxBytes: 10 * 1024 * 1024,
+        output: 'stream',
+        parse: true,
         multipart: true,
+      },
+    },
+    handler: async (request, h) => {
+      try {
+        const file = request.payload.image;
+
+        const chunks = [];
+        for await (const chunk of file) {
+          chunks.push(chunk);
+        }
+        const imageBuffer = Buffer.concat(chunks);
+
+        const processedBuffer = await sharp(imageBuffer)
+          .resize(384, 384)
+          .toFormat('jpeg')
+          .toBuffer();
+        const inputTensor = tf.node.decodeImage(processedBuffer)
+          .expandDims(0)
+          .div(255.0);
+
+        const prediction = model.predict(inputTensor);
+        const result = prediction.dataSync();
+
+        return { prediction: Array.from(result) };
+      } catch (error) {
+        console.error('Prediction error:', error);
+        return h.response({ error: error.message }).code(500);
       }
-    }
+    },
   });
 
   server.route({
@@ -55,6 +80,5 @@ const { loadModel, predict } = require('./inference');
   });
 
   await server.start();
-
-  console.log(`Server start at: ${server.info.uri}`);
+  console.log('Server running on %s', server.info.uri);
 })();
