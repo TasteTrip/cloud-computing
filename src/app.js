@@ -71,14 +71,6 @@ const Inert = require('@hapi/inert');
     },
   });
 
-  server.route({
-    method: '*',
-    path: '/{any*}',
-    handler: (request, h) => {
-      return h.file('default.html');
-    }
-  });
-
   await server.start();
   console.log('Server running on %s', server.info.uri);
 })();
