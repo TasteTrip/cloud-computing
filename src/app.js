@@ -3,6 +3,7 @@ const Hapi = require('@hapi/hapi');
 const sharp = require('sharp');
 const Path = require('path');
 const Inert = require('@hapi/inert');
+const fs = require('fs');
 
 (async () => {
   const modelPath = 'file://model/model.json';
@@ -50,20 +51,57 @@ const Inert = require('@hapi/inert');
         for await (const chunk of file) {
           chunks.push(chunk);
         }
+
         const imageBuffer = Buffer.concat(chunks);
 
         const processedBuffer = await sharp(imageBuffer)
           .resize(384, 384)
           .toFormat('jpeg')
           .toBuffer();
-        const inputTensor = tf.node.decodeImage(processedBuffer)
+
+        const inputTensor = tf.node
+          .decodeImage(processedBuffer)
           .expandDims(0)
           .div(255.0);
 
         const prediction = model.predict(inputTensor);
+
         const result = prediction.dataSync();
 
         return { prediction: Array.from(result) };
+
+      } catch (error) {
+        console.error('Prediction error:', error);
+        return h.response({ error: error.message }).code(500);
+      }
+    },
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/api/test-predict',
+    handler: async (request, h) => {
+      try {
+        const imagePath = Path.join(__dirname, '../test_image/bakso.jpg');
+
+        const imageBuffer = fs.readFileSync(imagePath);
+
+        const processedBuffer = await sharp(imageBuffer)
+          .resize(384, 384)
+          .toFormat('jpeg')
+          .toBuffer();
+
+        const inputTensor = tf.node
+          .decodeImage(processedBuffer)
+          .expandDims(0)
+          .div(255.0);
+
+        const prediction = model.predict(inputTensor);
+
+        const result = prediction.dataSync();
+
+        return { prediction: Array.from(result) };
+
       } catch (error) {
         console.error('Prediction error:', error);
         return h.response({ error: error.message }).code(500);
