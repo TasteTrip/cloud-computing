@@ -101,7 +101,7 @@
       const loading = document.createElement('p');
       loading.id = 'loading';
       loading.textContent = 'loading...';
-      contentDiv.appendChild(loading);
+      contentDiv.prepend(loading);
 
       try {
         const file = fileInput.files[0];
@@ -122,19 +122,19 @@
 
         const data = await response.json();
 
-        const foodName = document.createElement('h2');
-        foodName.textContent = data.prediction.name;
-        contentDiv.appendChild(foodName);
-
         const foodInfo = document.createElement('p');
         foodInfo.textContent = data.prediction.info;
         foodInfo.classList.add('food-description');
-        contentDiv.appendChild(foodInfo);
+        contentDiv.prepend(foodInfo);
+
+        const foodName = document.createElement('h2');
+        foodName.textContent = data.prediction.name;
+        contentDiv.prepend(foodName);
 
       } catch (error) {
         const responseDiv = document.createElement('p');
         responseDiv.textContent = `Failed to upload: ${error.message}`;
-        contentDiv.appendChild(responseDiv);
+        contentDiv.prepend(responseDiv);
 
       } finally {
         const finishLoading = document.getElementById('loading');
