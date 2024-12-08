@@ -12,7 +12,7 @@ const foodData = [
     info: "Bakso is a beloved Indonesian meatball soup that has captured the hearts of many food enthusiasts. The meatballs are typically made from a mixture of finely ground beef or chicken, combined with tapioca flour for a bouncy texture. These are served in a savory, aromatic broth often seasoned with garlic, shallots, and white pepper. The dish is usually accompanied by yellow noodles or vermicelli, tofu, and sometimes siomay (dumplings) or boiled eggs. Toppings like fried shallots, celery, and a dash of sambal (chili sauce) elevate the flavors, making it a comforting street food staple.",
   },
   {
-    nme: "Batagor",
+    name: "Batagor",
     info: "Batagor, short for Bakso Tahu Goreng, is a popular street food originating from Bandung, Indonesia. This dish combines deep-fried fish cakes and tofu stuffed with seasoned fish paste, creating a crispy and savory delight. It is typically served with a rich peanut sauce that’s sweet and slightly spicy, often accompanied by sweet soy sauce and a squeeze of lime. Batagor is enjoyed as a snack or light meal, cherished for its crunchy texture and the perfect balance of flavors in the sauce.",
   },
   {

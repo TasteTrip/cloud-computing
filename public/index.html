@@ -98,6 +98,8 @@
         return;
       }
 
+      contentDiv.prepend(document.createElement('hr'));
+
       const loading = document.createElement('p');
       loading.id = 'loading';
       loading.textContent = 'loading...';
@@ -109,7 +111,7 @@
         const compressedFile = await compressImage(file, 1200);
 
         const formData = new FormData();
-        formData.append('image', compressedFile, file.name);
+        formData.append('image', compressedFile);
 
         const response = await fetch('http://35.222.70.188:3000/api/predict', {
           method: 'POST',
@@ -122,13 +124,30 @@
 
         const data = await response.json();
 
+        const foodName = document.createElement('h2');
+        foodName.textContent = data.prediction.name;
+
         const foodInfo = document.createElement('p');
         foodInfo.textContent = data.prediction.info;
         foodInfo.classList.add('food-description');
-        contentDiv.prepend(foodInfo);
 
-        const foodName = document.createElement('h2');
-        foodName.textContent = data.prediction.name;
+        const foodImage = document.createElement('img');
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            foodImage.src = e.target.result;
+            foodImage.alt = 'Uploaded Image';
+            foodImage.style.maxWidth = '90vw';
+            foodImage.style.width = '20rem';
+            foodImage.style.height = 'auto';
+          };
+
+          reader.readAsDataURL(file);
+        }
+
+        contentDiv.prepend(foodInfo);
+        contentDiv.prepend(foodImage);
         contentDiv.prepend(foodName);
 
       } catch (error) {
