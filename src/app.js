@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const Path = require('path');
 const Inert = require('@hapi/inert');
 const fs = require('fs');
+require('dotenv').config();
 
 const foodData = [
   {
@@ -49,8 +50,7 @@ const foodData = [
 ];
 
 (async () => {
-  const modelPath = 'file://model/model.json';
-  const model = await tf.loadGraphModel(modelPath);
+  const model = await tf.loadGraphModel(process.env.MODEL_URL);
 
   const server = Hapi.server({
     host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',

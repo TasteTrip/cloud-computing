@@ -23,6 +23,7 @@
     "@hapi/hapi": "^21.3.12",
     "@hapi/inert": "^7.1.0",
     "@tensorflow/tfjs-node": "^4.22.0",
+    "dotenv": "^16.4.7",
     "sharp": "^0.33.5"
   }
 }
