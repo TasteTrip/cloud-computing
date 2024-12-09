@@ -152,7 +152,7 @@ const foodData = [
 
         const maxIndex = resultArray.indexOf(Math.max(...resultArray));
 
-        return { prediction: Object.entries(foodData)[maxIndex] };
+        return { prediction: foodData[maxIndex] };
 
       } catch (error) {
         console.error('Prediction error:', error);
