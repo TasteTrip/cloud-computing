@@ -50,8 +50,8 @@ const foodData = [
 ];
 
 (async () => {
-  const model = await tf.loadGraphModel('file://model-in-prod/model.json');
-  // const model = await tf.loadGraphModel(process.env.MODEL_URL);
+  // const model = await tf.loadGraphModel('file://model-in-prod/model.json');
+  const model = await tf.loadGraphModel(process.env.MODEL_URL);
 
   const server = Hapi.server({
     host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',

@@ -225,8 +225,8 @@
         const formData = new FormData();
         formData.append('image', compressedFile);
 
-        // const response = await fetch('http://35.222.70.188:3000/api/predict', {
-        const response = await fetch('http://localhost:3000/api/predict', {
+        const response = await fetch('http://35.222.70.188:3000/api/predict', {
+          // const response = await fetch('http://localhost:3000/api/predict', {
           method: 'POST',
           body: formData,
         });
