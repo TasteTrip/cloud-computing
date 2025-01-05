@@ -32,6 +32,8 @@
       flex-direction: column;
       min-height: 100vh;
       background-image: linear-gradient(#fa812f, #ffd15a);
+
+      height: 100rem;
     }
 
     header {
@@ -113,7 +115,7 @@
 </head>
 
 <body>
-  <header>
+  <header style="margin-top: 5rem;">
     <h1>TasteTrip: Food Analyzer</h1>
     <form>
       <input type="file" id="form-image" accept="image/*" required>
@@ -121,10 +123,63 @@
     </form>
   </header>
 
-  <main id="main-content"></main>
+  <!-- <main id="main-content"></main> -->
 
-  <!-- <main id="main-content">
+  <main id="main-content">
     <section class="main__section">
+      <h2>Gudeg</h2>
+      <img src="../gudeg.jpg" alt="Gudeg">
+      <div class="main__info" style="padding-right: 1.25rem; margin: 0;">
+        <p style="margin-top: 0;">
+          Gudeg is a traditional Javanese dish from Indonesia, originating from Yogyakarta. It's often referred to as
+          "Jogja's signature dish." Gudeg is known for its sweet and savory flavor, with a unique taste that's loved by
+          many.
+        </p>
+
+        <p style="font-weight: bold;">
+          Ingredients
+        </p>
+
+        <ul>
+          <li>Garlic</li>
+          <li>Shallots</li>
+          <li>Coriander</li>
+          <li>Candlenuts</li>
+          <li>Galangal</li>
+          <li>Bay leaves (daun salam)</li>
+          <li>Teak leaves (daun jati) for its reddish-brown color</li>
+        </ul>
+
+        <p style="font-weight: bold;">
+          Health Benefits
+        </p>
+
+        <ul>
+          <li>Rich in Fiber: Young jackfruit, the main ingredient, is high in dietary fiber, which aids digestion and
+            promotes gut health.</li>
+          <li>Low in Fat (Base Dish): The base gudeg (young jackfruit cooked in spices) is naturally low in fat,
+            especially if minimal coconut milk is used. Tempeh and Tofu add plant-based protein and nutrients like
+            calcium and iron.</li>
+        </ul>
+
+        <p style="font-weight: bold;">
+          How to Make Gudeg Healthier
+        </p>
+
+        <ul>
+          <li>Reduce Sugar: Use less palm sugar or substitute with a natural sweetener like stevia.</li>
+          <li>Limit Coconut Milk: Opt for light coconut milk or use less of it during cooking.</li>
+          <li>Balance the Meal: Pair gudeg with lean proteins like boiled chicken or eggs.</li>
+          <li>Control Portion Size: Enjoy smaller portions of the richer accompaniments like krecek to reduce sodium and
+            fat intake.</li>
+        </ul>
+      </div>
+    </section>
+    <hr>
+    <!-- </main> -->
+
+    <!-- <main id="main-content"> -->
+    <!-- <section class="main__section">
       <h2>Bakso</h2>
       <img src="../test_image/bakso.jpg" alt="Bakso">
       <p class="main__info">
@@ -137,9 +192,9 @@
         comforting street food staple.
       </p>
     </section>
-    <hr>
+    <hr> -->
 
-    <section class="main__section">
+    <!-- <section class="main__section">
       <h2>Bakso</h2>
       <img src="../test_image/bakso.jpg" alt="Bakso">
       <p class="main__info">
@@ -152,8 +207,8 @@
         comforting street food staple.
       </p>
     </section>
-    <hr>
-  </main> -->
+    <hr> -->
+  </main>
 
   <script>
     function compressImage(file, maxDimension) {
