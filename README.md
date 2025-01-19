@@ -2,6 +2,8 @@
 
 ### Aplikasi web dapat diakses di [halaman berikut](http://35.222.70.188:3000/)
 
+atau di [halaman backup](https://cc-api-predict-dev-fe-production.up.railway.app/)
+
 ### Untuk mengakses secara local, dapat di lakukan melalui tahapan berikut:
 
 1. Siapkan machine learning model di cloud storage bucket
